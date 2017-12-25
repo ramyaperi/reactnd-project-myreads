@@ -1,9 +1,7 @@
 import React from 'react'
 // import * as BooksAPI from './BooksAPI'
 import './App.css'
-import {
-  Route
-} from 'react-router-dom'
+import {Route} from 'react-router-dom'
 import ShowBooks from './ShowBooks'
 import SearchBook from './SearchBook'
 import * as BooksAPI from './BooksAPI'
@@ -30,9 +28,7 @@ class BooksApp extends React.Component {
     }
 
     BooksAPI.getAll().then((books) => {
-      this.setState({
-        books
-      })
+      this.setState({books})
     })
 
 
@@ -58,38 +54,19 @@ class BooksApp extends React.Component {
   }
 
   render() {
-    return ( <
-      div className = "app" >
-      <
-      Route exact path = '/'
-      render = {
-        () => ( <
-          ShowBooks books = {
-            this.state.books
-          }
-          changeshelf = {
-            this.changeshelf
-          }
-          />
-        )
-      }
-      /> <
-      Route path = '/search'
-      render = {
-        () => ( <
-          SearchBook books = {
-            this.state.books
-          }
-          changeshelf = {
-            this.changeshelf
-          }
-          />
-        )
-      }
-      /> <
-      /div>
-    )
+    return (
+      <div className="app">
+        <Route exact path='/' render={() => (
+            <ShowBooks books={this.state.books}
+              changeshelf={this.changeshelf}  />
+          )}/>
+        <Route path='/search'
+          render={() => ( <SearchBook books={this.state.books}
+            changeshelf={this.changeshelf}/>)
+          }/>
+        </div>
+      )
+    }
   }
-}
 
-export default BooksApp
+  export default BooksApp
