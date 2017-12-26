@@ -1,12 +1,9 @@
-import React, {
-  Component
-} from 'react';
-import {
-  Link
-} from 'react-router-dom'
+import React, {Component} from 'react';
+import {Link} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import serializeForm from 'form-serialize'
 import Book from './Book'
+import { Debounce } from 'react-throttle';
 
 class SearchBook extends Component {
 
@@ -30,14 +27,13 @@ class SearchBook extends Component {
   }
 
   search=(e) => {
-    e.preventDefault()
-    const value=serializeForm(e.target, {
-      hash: true
-    })
-    BooksAPI.search(value.serachstring).then((books) => {
-      this.setState({
-        books
-      })
+    const value=e.target.value
+    BooksAPI.search(value).then((books) => {
+      if(books){
+      this.setState({books})
+      }
+    }).catch((error) => {
+      console.log(error)
     })
 
   }
@@ -51,16 +47,14 @@ class SearchBook extends Component {
           <div className="search-books-bar" >
           <Link to="/" className="close-search" > Close < /Link>
             <div className="search-books-input-wrapper" >
-          <form onSubmit={this.search} >
-          <input type="text" name="serachstring" placeholder="Search by title or author" / >
-          </form>
+         <Debounce time="100" handler="onChange">
+            <input onChange={this.search} type="text" name="serachstring" placeholder="Search by title or author" / >
+          </Debounce>
           </div>
           </div>
           <div className="search-books-results" >
-          <ol className="books-grid" > {
-            this.state.books.map((book) => ( <li key={
-                  book.id
-                } >
+          <ol className="books-grid" > {this.state.books.map((book) => (
+              <li key={book.id} >
                 <Book book={book}
                 changeshelf={this.props.changeshelf}/>
               </li>))}

@@ -1,21 +1,16 @@
-import React, {
-  Component
-} from 'react';
+import React from 'react';
 
 //even a function will do but using component in case of future changes
-class Book extends Component {
-  render() {
-    const {
-      book
-    } = this.props
+ const Book = function(props)  {
+
     return ( <div className="book" >
     <div className="book-top" >
       <div className="book-cover"
-        style={{  width: 128,  height: 193,backgroundImage: `url(${book.imageLinks.thumbnail})`}} > < /div>
+        style={{  width: 128,  height: 193,backgroundImage: `url(${props.book.imageLinks.thumbnail})`}} > < /div>
         <div className="book-shelf-changer" >
           <select defaultValue="none"
-            value={book.shelf}
-            onChange={(e) => this.props.changeshelf(e, book)} >
+            value={props.book.shelf}
+            onChange={(e) => props.changeshelf(e, props.book)} >
             <option value="moveto" disabled > Move to... < /option>
               <option value="currentlyReading" > Currently Reading < /option>
                 <option value="wantToRead" > Want to Read < /option>
@@ -25,14 +20,15 @@ class Book extends Component {
                   </div>
                 </div>
                 <div className="book-title" > {
-                    book.title
+                    props.book.title
                   } < /div>
                   <div className="book-authors" > {
-                      book.authors
+                      props.book.authors
                     } < /div>
                   </div>
                 )
-              }
 
-            }
-            export default Book
+
+            };
+
+  export default Book;
